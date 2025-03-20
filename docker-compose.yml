@@ -1,21 +1,73 @@
 services: 
-  frontend:
+  frontend-dev:
     container_name: frontend
     image: plutou/webimmunization-frontend:devel
     ports:
       - "3001:3000"
+    profiles: ["local", "dev"]
     networks:
       - express_nw
     restart: always
-  watchtower:
+  frontend-prod:
+    container_name: frontend
+    image: plutou/webimmunization-frontend:main
+    ports:
+      - "3001:3000"
+    profiles: ["prod"]
+    networks:
+      - express_nw
+    restart: always
+  # backend-dev:
+  #   container_name: backend
+  #   image: plutou/webimmunization-backend:devel
+  #   ports:
+  #     - "8000:8000"
+  #   profiles: ["local", "dev"]
+  #   networks:
+  #     - express_nw
+  
+  # backend-prod:
+  #   container_name: backend
+  #   image: plutou/webimmunization-backend:main
+  #   ports:
+  #     - "8000:8000"
+  #   profiles: ["prod"]
+  #   networks:
+  #     - express_nw
+      
+  watchtower-dev:
     container_name: watchtower
     image: containrrr/watchtower
+    profiles: ["prod", "dev"]
     environment:
       - WATCHTOWER_CLEANUP=true
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
-    command: --interval 30 frontend
+    command: --interval 30 frontend backend
+
+  db:
+    image: postgres:latest
+    restart: unless-stopped
+    volumes:
+      - postgres_data:/var/lib/postgresql/data/
+    ports:
+      - "5433:5433"
+    environment:
+      POSTGRES_DB: postgres
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: mysecretpassword
+    healthcheck:
+      test: [ "CMD-SHELL", "pg_isready" ]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    networks:
+      - express_nw
+    profiles: [ "local" ]
 
 networks:
   express_nw:
     driver: bridge
+
+volumes:
+  postgres_data:
