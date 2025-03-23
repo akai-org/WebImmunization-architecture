@@ -8,23 +8,25 @@ services:
     networks:
       - express_nw
     restart: always
-  frontend-prod:
-    container_name: frontend
-    image: plutou/webimmunization-frontend:main
-    ports:
-      - "3001:3000"
-    profiles: ["prod"]
-    networks:
-      - express_nw
-    restart: always
-  # backend-dev:
-  #   container_name: backend
-  #   image: plutou/webimmunization-backend:devel
+    
+  # frontend-prod:
+  #   container_name: frontend
+  #   image: plutou/webimmunization-frontend:main
   #   ports:
-  #     - "8000:8000"
-  #   profiles: ["local", "dev"]
+  #     - "3001:3000"
+  #   profiles: ["prod"]
   #   networks:
   #     - express_nw
+  #   restart: always
+  
+  backend-dev:
+    container_name: backend
+    image: plutou/webimmunization-backend:devel
+    ports:
+      - "8000:8000"
+    profiles: ["local", "dev"]
+    networks:
+      - express_nw
   
   # backend-prod:
   #   container_name: backend
