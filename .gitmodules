@@ -1,9 +1,9 @@
 [submodule "backend"] 
  	path = WebImmunization-backend
  	url = https://github.com/akai-org/WebImmunization-backend
- 	branch = main
+ 	branch = devel
 [submodule "frontend"] 
 	path = WebImmunization-frontend 
 	url = https://github.com/akai-org/WebImmunization-frontend
-	branch = main
+	branch = devel
 
