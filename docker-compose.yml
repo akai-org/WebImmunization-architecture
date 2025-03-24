@@ -7,8 +7,6 @@ services:
     profiles: ["local", "dev"]
     networks:
       - express_nw
-    volumes:
-      - ./frontend:/app
     restart: always
     
   # frontend-prod:
@@ -29,8 +27,6 @@ services:
     profiles: ["local", "dev"]
     networks:
       - express_nw
-    volumes:
-      - ./frontend:/app
     restart: always
 
   # backend-prod:
